@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gitcoin Donor Dashboard</title>
+    <link href="https://gitcoin-grants-51f2c0c12a8e.herokuapp.com/static/css/main.f4a8738f.css" rel="stylesheet">
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+</head>
+
+<body>
+    <h1>GG19 Voter Dashboard</h1>
+    <div>
+        <h3>Step 1: Pick the round you partecipated in:</h2>
+            <select id="roundSelection">
+                <!-- Autopopulated -->
+            </select>
+    </div>
+    <div>
+        <h3>Step 2: Provide one of the following:</h3>
+        <label for="projectIdInput">The number at the end of a gitcoin project URL</label>
+        <input type="text" id="projectIdInput" placeholder="project ID">
+        <label for="projectNameInput">The project name as used in the UI. Case insensitive.</label>
+        <input type="text" id="projectNameInput" placeholder="Enter Project Name">
+
+    </div>
+    <div>
+        <h3>Step 3: Load The results</h3>
+        <button id="fetchDataButton">Fetch Voter Data</button>
+    </div>
+
+    <div id="projectDetails" style="margin: 20px 0;">
+        <h2>Project Details</h2>
+        <p id="projectName">Name: <span></span></p>
+        <p id="projectId">ID: <span></span></p>
+    </div>
+
+    <table id="donorData" border="1">
+        <thead>
+            <tr>
+                <th>Transaction hash</th>
+                <th>Voter Wallet Address</th>
+                <th>ENS</th>
+                <th>Token Name</th>
+                <th>Amount (USD)</th>
+                <th>Network ID</th>
+            </tr>
+        </thead>
+        <tbody id="resultTableBody">
+            <!-- Data rows will go here -->
+        </tbody>
+    </table>
+    <div id="errorMessage"></div>
+</body>
+
+<script>
+
+    const categories = [
+        { name: "Ethereum Infrastructure", url: "https://explorer.gitcoin.co/#/round/137/0xa1d52f9b5339792651861329a046dd912761e9a9" },
+        { name: "Web3 Community and Education", url: "https://explorer.gitcoin.co/#/round/424/0x98720dd1925d34a2453ebc1f91c9d48e7e89ec29" },
+        { name: "Web3 Open Source Software", url: "https://explorer.gitcoin.co/#/round/424/0xd4cc0dd193c7dc1d665ae244ce12d7fab337a008" },
+        { name: "Climate Solutions", url: "https://explorer.gitcoin.co/#/round/10/0x5eb890e41c8d2cff75ea942085e406bb90016561" },
+        { name: "TEC", url: "https://explorer.gitcoin.co/#/round/42161/0x0f0b9d9f72c1660905c57864e79ceb409ada0c9e" },
+        { name: "Open Civics", url: "https://explorer.gitcoin.co/#/round/424/0xe60a569ec8aac2045d9fda306dc2a16cc1e52a90" },
+        { name: "GCC", url: "https://explorer.gitcoin.co/#/round/10/0x6726fe9c89fb04eaef388c11cf55be6aa0a62fb9" },
+        { name: "1inch", url: "https://explorer.gitcoin.co/#/round/42161/0xe168ac27b7c32db85478a6807640c8bca1220d15" },
+        { name: "Meta Pool", url: "https://explorer.gitcoin.co/#/round/10/0x79115c9114055f16bb5b0e9bbfa450844d0fcb3a" },
+        { name: "Arbitrum Citizen's Round", url: "https://explorer.gitcoin.co/#/round/42161/0x3ac78e1ae5086904d53b41c747188216789f59a7" },
+        { name: "Web3 Social", url: "https://explorer.gitcoin.co/#/round/10/0xc34745b3852df32d5958be88df2bee0a83474001" },
+        { name: "Meta Gov", url: "https://explorer.gitcoin.co/#/round/42161/0xa7608d95a93cc684f2719323d40cbd0f59afe7d4" },
+        { name: "GreenPill Network", url: "https://explorer.gitcoin.co/#/round/10/0x4727e3265706c59dbc31e7c518960f4f843bb4da" },
+        { name: "Cult DAO", url: "https://explorer.gitcoin.co/#/round/10/0x7f9415761afbd82e3fe2fd9e878fa643184bc729" },
+        { name: "SheFi", url: "https://explorer.gitcoin.co/#/round/10/0x36f548e082b09b0cec5b3f5a7b78953c75de5e74" },
+        { name: "Daily Gwei", url: "https://explorer.gitcoin.co/#/round/10/0xc08008d47e3deb10b27fc1a75a96d97d11d58cf8" },
+        { name: "Build Guild", url: "https://explorer.gitcoin.co/#/round/10/0x40511f88b87b69496a3471cdbe1d3d25ac68e408" },
+        { name: "Ethereum.org", url: "https://explorer.gitcoin.co/#/round/10/0xc9a01d3d2505d9d2418dd2da64d06cf53fd403a0" },
+        { name: "Public Goods Africa", url: "https://explorer.gitcoin.co/#/round/10/0xd309defd59c0b8792b14197eaa40043d9625b22b" },
+        { name: "Raid Guild", url: "https://explorer.gitcoin.co/#/round/10/0xb5c0939a9bb0c404b028d402493b86d9998af55e" }
+    ];
+
+    const parsedCategories = categories.map(category => {
+        const urlParts = category.url.split('/');
+        const chainId = urlParts[urlParts.length - 2];
+        const roundId = urlParts[urlParts.length - 1];
+        return {
+            name: category.name,
+            chainId: chainId,
+            roundId: roundId
+        };
+    });
+
+    const resolveENS = async (ethereumAddress) => {
+        // Connect to the mainnet via Infura or Alchemy
+        const provider = new window.ethers.providers.JsonRpcProvider('https://eth-mainnet.gateway.pokt.network/v1/lb/b6064f86');
+
+        // Resolve ENS name
+        try {
+            const ensName = await provider.lookupAddress(ethereumAddress);
+            return ensName; // This will be null if there's no ENS name for the address
+        } catch (error) {
+            console.error('Error resolving ENS:', error);
+        }
+    }
+
+    const fetchRoundIds = (chainId) => {
+        return fetch(`https://grants-stack-indexer.gitcoin.co/data/${chainId}/rounds.json`)
+            .then(response => response.json())
+            .then(data => {
+                return data.map(round => round.id);
+            });
+    }
+
+    const roundSelect = document.getElementById('roundSelection');
+
+    parsedCategories.forEach(category => {
+        let option = document.createElement('option');
+        option.value = category.name;
+        option.textContent = category.name;
+        option.setAttribute('data-chain-id', category.chainId);
+        option.setAttribute('data-round-id', category.roundId);
+        roundSelect.appendChild(option);
+    });
+
+    document.getElementById('fetchDataButton').addEventListener('click', async function () {
+
+        resultTableBody.innerHTML = ""
+        errorMessage.innerHTML = ""
+
+        var selectedOption = roundSelect.options[roundSelect.selectedIndex];
+        var chainId = selectedOption.getAttribute('data-chain-id');
+        var roundId = selectedOption.getAttribute('data-round-id');
+
+        var projectId = document.getElementById('projectIdInput').value;
+        var projectName = document.getElementById('projectNameInput').value;
+
+
+        fetchRoundIds(chainId).then(async roundIds => {
+            let correctRoundId = roundIds.find(id => id.toLowerCase() === roundId);
+
+            if (!correctRoundId) {
+                throw new Error('Round ID not found.');
+            }
+
+            fetch(`https://grants-stack-indexer.gitcoin.co/data/${chainId}/rounds/${correctRoundId}/applications.json`)
+                .then(async response => response.json())
+                .then(async projects => {
+
+                    let matchedProject;
+
+                    for (let p of projects) {
+                        console.log(p);
+                        if (p.id.toLowerCase() === projectId.toLowerCase()) {
+                            matchedProject = p;
+                            break;
+                        } else if (p.metadata?.application?.project?.title?.toLowerCase() === projectName.toLowerCase()) {
+                            matchedProject = p;
+                            break;
+                        }
+                    }
+
+                    if (!matchedProject) {
+                        throw new Error('Project not found. Please enter a valid Project ID or Name.');
+                    }
+
+                    document.getElementById('projectName').querySelector('span').textContent = matchedProject.metadata.application.project.title || 'No title available';
+                    document.getElementById('projectId').querySelector('span').textContent = matchedProject.id || 'No ID available';
+
+
+                    fetch(`https://grants-stack-indexer.gitcoin.co/data/${chainId}/rounds/${correctRoundId}/votes.json`)
+                        .then(async response => {
+                            const allVotes = await response.json();
+                            const projectVotes = allVotes.filter(vote => vote.projectId.toLowerCase() === matchedProject.projectId.toLowerCase());
+
+                            var table = document.getElementById('donorData').getElementsByTagName('tbody')[0];
+                            table.innerHTML = '';
+
+                            projectVotes.forEach(donation => {
+                                var row = table.insertRow();
+                                row.insertCell(0).innerText = donation.transaction;
+                                row.insertCell(1).innerText = donation.voter;
+                                row.insertCell(2).innerText = 'loading...';
+                                row.insertCell(3).innerText = donation.token === "0x0000000000000000000000000000000000000000" ? "ETH" : "DAI";
+                                row.insertCell(4).innerText = donation.amountUSD;
+                                row.insertCell(5).innerText = chainId;
+                            });
+
+
+                            const batchSize = 2; // Number of concurrent requests
+
+                            for (let i = 0; i < projectVotes.length; i += batchSize) {
+                                const batch = projectVotes.slice(i, i + batchSize);
+
+                                const promises = batch.map((vote, index) =>
+                                    resolveENS(vote.voter).then(ensName => {
+                                        table.rows[i + index].cells[2].innerText = ensName || 'N/A';
+                                    })
+                                );
+
+                                await Promise.all(promises);
+
+                            }
+
+
+                        })
+                        .catch(error => {
+                            document.getElementById('errorMessage').innerText = error.message;
+                        });
+
+                }).catch(error => {
+                    document.getElementById('errorMessage').innerText = error.message;
+                });
+        });
+    });
+
+</script>
+</html>

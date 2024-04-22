@@ -1,0 +1,29 @@
+diff --git a/node_modules/next/dist/esm/server/lib/incremental-cache/index.js b/node_modules/next/dist/esm/server/lib/incremental-cache/index.js
+index 35836a1..95d879a 100644
+--- a/node_modules/next/dist/esm/server/lib/incremental-cache/index.js
++++ b/node_modules/next/dist/esm/server/lib/incremental-cache/index.js
+@@ -359,7 +359,7 @@ export class IncrementalCache {
+         const itemSize = JSON.stringify(data).length;
+         if (ctx.fetchCache && // we don't show this error/warning when a custom cache handler is being used
+         // as it might not have this limit
+-        !this.hasCustomCacheHandler && itemSize > 2 * 1024 * 1024) {
++        !this.hasCustomCacheHandler && itemSize > 10 * 1024 * 1024) {
+             if (this.dev) {
+                 throw new Error(`Failed to set Next.js data cache, items over 2MB can not be cached (${itemSize} bytes)`);
+             }
+diff --git a/node_modules/next/dist/server/lib/incremental-cache/index.js b/node_modules/next/dist/server/lib/incremental-cache/index.js
+index 846ce1b..219d951 100644
+--- a/node_modules/next/dist/server/lib/incremental-cache/index.js
++++ b/node_modules/next/dist/server/lib/incremental-cache/index.js
+@@ -384,9 +384,10 @@ class IncrementalCache {
+         if (this.disableForTestmode || this.dev && !ctx.fetchCache) return;
+         // FetchCache has upper limit of 2MB per-entry currently
+         const itemSize = JSON.stringify(data).length;
++				const max_fetch_size = Number(process.env.MAX_FETCH_SIZE) || 2 //gets value set in next.config
+         if (ctx.fetchCache && // we don't show this error/warning when a custom cache handler is being used
+         // as it might not have this limit
+-        !this.hasCustomCacheHandler && itemSize > 2 * 1024 * 1024) {
++        !this.hasCustomCacheHandler && itemSize > 10 * 1024 * 1024) {
+             if (this.dev) {
+                 throw new Error(`Failed to set Next.js data cache, items over 2MB can not be cached (${itemSize} bytes)`);
+             }
