@@ -3,7 +3,7 @@ FROM node:18-alpine AS base
 FROM base as builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /gitcoindonordata
-COPY package.json pnpm-lock.yaml* .npmrc ./
+COPY package.json pnpm-lock.yaml* ./
 RUN yarn global add pnpm && pnpm i --frozen-lockfile
 COPY . .
 ENV NODE_ENV=production

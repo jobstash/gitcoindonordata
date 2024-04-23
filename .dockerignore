@@ -1,0 +1,10 @@
+Dockerfile
+.dockerignore
+node_modules
+.git
+.vscode
+.env.example
+.github
+dist
+coverage
+.husky
