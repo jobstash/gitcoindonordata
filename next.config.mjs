@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'dweb.link',
+        hostname: 'd16c97c2np8a2o.cloudfront.net',
         pathname: '/ipfs/**',
       },
       {
