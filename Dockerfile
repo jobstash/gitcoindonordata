@@ -10,7 +10,7 @@ RUN yarn global add pnpm && pnpm i --frozen-lockfile
 FROM base as builder
 RUN yarn global add pnpm
 WORKDIR /gitcoindonordata
-COPY --from=deps /jobstash/node_modules ./node_modules
+COPY --from=deps /gitcoindonordata/node_modules ./node_modules
 COPY . .
 ENV NODE_ENV=production
 RUN pnpm build
