@@ -4,7 +4,7 @@ export const STALETIME = {
   DEFAULT: 1000 * 60 * 60, // 1 hr
 };
 
-export const IPFS_URL = 'https://cloudflare-ipfs.com/ipfs';
+export const IPFS_URL = 'https://dweb.link/ipfs';
 
 export const CHAINS = [
   {
