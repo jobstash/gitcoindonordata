@@ -69,9 +69,10 @@ export const ProjectNameInput = () => {
         renderItem={renderItem}
         isLoading={!data}
       />
-      <button className="btn" disabled={!currentItem || !search} onClick={onClickFetch}>
+      <button className="rounded-md border border-black/20 bg-gradient-to-tr from-green-300 via-slate-500 to-red-600 px-8 py-3 font-mono" disabled={!currentItem || !search} onClick={onClickFetch}>
         Fetch Data
       </button>
     </>
   );
 };
+
