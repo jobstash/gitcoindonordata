@@ -11,7 +11,7 @@ const ProjectDonations = dynamic(
   () => import('@/components/project-donations').then((m) => m.ProjectDonations),
   {
     ssr: false,
-    loading: () => <p>LOading donations ...</p>,
+    loading: () => <p>Loading donations ...</p>,
   },
 );
 
