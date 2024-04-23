@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start:standalone": "node server.js",
+    "start:standalone": "node .next/standalone/server.js",
     "lint": "eslint ./src",
     "lint:staged": "lint-staged",
     "lint:fix": "eslint ./src --fix",
