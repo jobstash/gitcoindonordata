@@ -12,11 +12,8 @@ RUN pnpm build
 FROM base AS runner
 WORKDIR /gitcoindonordata
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-COPY - from=builder /gitcoindonordata/package.json .
-COPY - from=builder /gitcoindonordata/pnpm-lock.yaml .
+COPY - from=builder /gitcoindonordata/package.json ./
+COPY - from=builder /gitcoindonordata/pnpm-lock.yaml ./
 COPY - from=builder /gitcoindonordata/next.config.mjs ./
 COPY - from=builder /gitcoindonordata/.next/standalone ./
 COPY - from=builder /gitcoindonordata/.next/static ./.next/static
