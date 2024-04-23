@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "node server.js",
     "lint": "eslint ./src",
     "lint:staged": "lint-staged",
     "lint:fix": "eslint ./src --fix",
@@ -28,6 +29,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-responsive-carousel": "^3.2.23",
+    "sharp": "^0.33.3",
     "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
