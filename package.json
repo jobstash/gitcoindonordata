@@ -14,6 +14,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@glideapps/glide-data-grid": "^6.0.3",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@tanstack/react-query": "^5.29.2",
     "@tanstack/react-virtual": "^3.4.0",
@@ -21,9 +22,12 @@
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "jotai": "^2.8.0",
+    "lodash": "^4.17.21",
+    "marked": "^12.0.2",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-responsive-carousel": "^3.2.23",
     "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {

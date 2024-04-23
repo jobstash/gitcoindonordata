@@ -1,8 +1,19 @@
+import '@glideapps/glide-data-grid/dist/index.css';
+
+import dynamic from 'next/dynamic';
+
 import { ProjectBreadcrumbs } from '@/components/project-breadcrumbs';
-import { ProjectDonations } from '@/components/project-donations';
 import { ProjectInfo } from '@/components/project-info';
 import { ProjectRoundStats } from '@/components/project-round-stats';
 import { ProjectStats } from '@/components/project-stats';
+
+const ProjectDonations = dynamic(
+  () => import('@/components/project-donations').then((m) => m.ProjectDonations),
+  {
+    ssr: false,
+    loading: () => <p>LOading donations ...</p>,
+  },
+);
 
 interface Props {
   params: {
