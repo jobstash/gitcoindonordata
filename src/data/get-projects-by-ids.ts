@@ -17,6 +17,7 @@ export const getProjectsByIds = graphql(`
           roundMetadata
         }
         donations {
+          chainId
           amountInUsd
           transactionHash
           donorAddress

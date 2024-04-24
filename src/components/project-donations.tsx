@@ -11,6 +11,7 @@ import {
   Item,
 } from '@glideapps/glide-data-grid';
 
+import { TOKENS } from '@/core/constants';
 import { useProject } from '@/hooks/use-project';
 
 interface Props {
@@ -25,8 +26,15 @@ export const ProjectDonations = ({ title }: Props) => {
   const getContent = useCallback(
     (cell: Item): GridCell => {
       const [col, row] = cell;
-      const { blockNumber, roundId, transactionHash, donorAddress, tokenAddress, amountInUsd } =
-        (donations ?? [])[row]!;
+      const {
+        blockNumber,
+        roundId,
+        transactionHash,
+        donorAddress,
+        tokenAddress,
+        chainId,
+        amountInUsd,
+      } = (donations ?? [])[row]!;
 
       switch (indexes[col]) {
         case 'blockNumber': {
@@ -79,17 +87,22 @@ export const ProjectDonations = ({ title }: Props) => {
           };
         }
         case 'tokenAddress': {
-          if (!tokenAddress) return getDefaultGridCell();
+          const tokenKey = `${chainId}:${tokenAddress?.toLowerCase()}`;
+          const token =
+            tokenAddress && tokenKey in TOKENS
+              ? TOKENS[tokenKey as keyof typeof TOKENS]
+              : tokenKey;
+
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
-            displayData: tokenAddress,
-            data: tokenAddress,
+            displayData: token,
+            data: token,
             contentAlign: 'center',
           };
         }
         case 'amountInUsd': {
-          if (!amountInUsd) return getDefaultGridCell();
+          if (!amountInUsd) return getDefaultGridCell({ contentAlign: 'center' });
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
@@ -120,6 +133,13 @@ export const ProjectDonations = ({ title }: Props) => {
 
   return (
     <>
+      <pre>
+        {JSON.stringify(
+          { addresses: (donations ?? []).map((d) => d?.donorAddress).filter(Boolean) },
+          undefined,
+          '\t',
+        )}
+      </pre>
       <DataEditor
         getCellContent={getContent}
         columns={columns}
@@ -212,7 +232,7 @@ const getDefaultGridCell = (args?: {
   text?: string;
   contentAlign?: BaseGridCell['contentAlign'];
 }): GridCell => {
-  const { text = 'N/A', contentAlign } = args ?? {
+  const { text = 'N/A', contentAlign = 'center' } = args ?? {
     text: 'N/A',
   };
 
