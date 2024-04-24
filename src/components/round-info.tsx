@@ -18,12 +18,12 @@ export const RoundInfo = ({ title, roundId }: Props) => {
   const roundEnded = new Date(endTime).getTime() < Date.now();
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-4">
-        <span>{name}</span>
-        {roundEnded && <span>Round ended</span>}
+    <div className="pb-8">
+      <div className="flex flex-wrap items-center gap-2 pb-6 md:gap-4 md:pb-4">
+        <span className='text-xl md:text-2xl'>{name}</span>
+        {roundEnded && <span className='rounded-xl bg-alert px-2 py-0.5 text-base'>Round ended</span>}
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-2 md:gap-4 [&_*]:text-xs [&_*]:font-normal [&_*]:md:text-base">
         <span>on</span>
         <div className="flex items-center gap-1">
           <Image
@@ -35,7 +35,11 @@ export const RoundInfo = ({ title, roundId }: Props) => {
           <span>{chain?.name}</span>
         </div>
         <span>[]</span>
-        <span>{`${startTime} - ${endTime}`}</span>
+        <div className='flex gap-1'>
+          <span className='rounded-md bg-greyTile px-1 py-0.5'>{`${startTime}`}</span>
+          - 
+          <span className='rounded-md bg-greyTile px-1 py-0.5'>{`${endTime}`}</span>
+        </div>
       </div>
     </div>
   );

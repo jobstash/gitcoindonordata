@@ -12,7 +12,7 @@ interface Props {
 
 const RoundPage = ({ params: { title, roundId } }: Props) => {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div>
       <RoundBreadcrumbs title={title} roundId={roundId} />
       <ProjectInfo title={title} />
       <RoundInfo title={title} roundId={roundId} />

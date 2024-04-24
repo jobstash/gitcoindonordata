@@ -10,12 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       colors:{
-        bgGrey:'#f9f9f9',
+        bgGrey:'rgba(247,247,247,0.4)',
         greyMid:'#555555',
+        greyTile: "#F1F1F1",
         greenBtn:'#D2F2EF',
         btnFirst: 'rgba(255, 151, 118, 0.6)',
         btnSecond: 'rgba(95, 148, 188, 0.6)',
         btnLast: 'rgba(222, 171, 12, 0.6)',
+        alert: '#FFD9CD',
       }
     },
     fontFamily: {

@@ -54,11 +54,11 @@ export const ProjectRoundStats = ({ title }: Props) => {
   return (
     <div className='flex flex-col gap-6 pt-6'>
       <h2 className='text-xl tracking-wide'>Round stats</h2>
-      <div className="-mx-2 flex flex-wrap">
+      <div className="-mx-2 flex flex-wrap md:-mx-3">
         {roundInfos.map(
           ({ id, name, chain, totalAmount, contributors, startTime, endTime }) => (
-            <div key={id} className="mb-4 flex w-1/2 flex-col px-2 md:w-1/3">
-              <div className="h-full space-y-2 rounded-xl bg-slate-200 p-4 md:space-y-3 md:p-6">
+            <div key={id} className="mb-4 flex w-1/2 flex-col px-2 md:mb-6 md:w-1/3 md:px-3">
+              <div className="h-full space-y-2 rounded-xl bg-greyTile p-4 md:space-y-3 md:p-6">
                 <div className="">
                   <h3 className='text-base font-normal tracking-wide'>{name}</h3>
                 </div>

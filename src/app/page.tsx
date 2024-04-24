@@ -4,7 +4,7 @@ import { ProjectNameInput } from '@/components/project-name-input';
 
 const HomePage = () => {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center px-4">
+    <div className="flex min-h-screen w-full items-center justify-center overflow-hidden px-4">
       <div className="fixed inset-0 -z-10">
         <Image
           width={1280}
