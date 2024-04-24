@@ -30,7 +30,7 @@ export const AutoComplete = <T extends WithValue>(props: Props<T>) => {
       <label className="input input-bordered flex items-center gap-2">
         <input
           type="text"
-          className="grow font-sans text-xs"
+          className="grow font-sans text-xs md:text-sm"
           value={inputValue}
           onChange={onChangeInput}
           placeholder="Enter project name"

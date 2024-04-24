@@ -9,7 +9,13 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        btnFirst: 'rgba(255, 151, 118, 0.5)',
+        btnSecond: 'rgba(95, 148, 188, 0.5)',
+        btnLast: 'rgba(222, 171, 12, 0.5)',
+      }
+    },
     fontFamily: {
       sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
       mono: [ "monospace", ...defaultTheme.fontFamily.sans]
