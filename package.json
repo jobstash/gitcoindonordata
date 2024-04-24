@@ -30,7 +30,9 @@
     "react-dom": "^18",
     "react-responsive-carousel": "^3.2.23",
     "sharp": "^0.33.3",
-    "tailwind-merge": "^2.3.0"
+    "swr": "^2.2.5",
+    "tailwind-merge": "^2.3.0",
+    "use-enstate": "0.0.1-10"
   },
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.11.0",

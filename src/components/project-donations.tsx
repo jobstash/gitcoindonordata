@@ -12,6 +12,8 @@ import {
 } from '@glideapps/glide-data-grid';
 
 import { TOKENS } from '@/core/constants';
+// import { useEnsNames } from '@/hooks/use-ens-names';
+import { useEnsSse } from '@/hooks/use-ens-sse';
 import { useProject } from '@/hooks/use-project';
 
 interface Props {
@@ -21,7 +23,11 @@ interface Props {
 export const ProjectDonations = ({ title }: Props) => {
   const { data } = useProject(title);
 
-  const donations = data?.flatMap((d) => d.applications?.flatMap((a) => a.donations));
+  const donations = (data ?? []).flatMap((d) => d.applications?.flatMap((a) => a.donations));
+
+  const addresses = donations.map((d) => d?.donorAddress).filter(Boolean) as string[];
+  // const { data: ensData } = useEnsNames(addresses.slice(0, 100));
+  const { data: ensData, error } = useEnsSse(addresses.slice(0, 100));
 
   const getContent = useCallback(
     (cell: Item): GridCell => {
@@ -30,7 +36,7 @@ export const ProjectDonations = ({ title }: Props) => {
         blockNumber,
         roundId,
         transactionHash,
-        donorAddress,
+        // donorAddress,
         tokenAddress,
         chainId,
         amountInUsd,
@@ -67,22 +73,19 @@ export const ProjectDonations = ({ title }: Props) => {
             contentAlign: 'center',
           };
         }
+
         case 'donorAddress': {
-          if (!donorAddress) return getDefaultGridCell();
+          // if (!ensData)
+          //   return { kind: GridCellKind.Loading, allowOverlay: false, contentAlign: 'center' };
+
+          // const ens =
+          //   donorAddress && donorAddress in ensData ? ensData[donorAddress] : donorAddress!;
+
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
-            displayData: donorAddress,
-            data: donorAddress,
-            contentAlign: 'center',
-          };
-        }
-        case 'ens': {
-          return {
-            kind: GridCellKind.Text,
-            allowOverlay: false,
-            displayData: 'TBD',
-            data: 'TBD',
+            displayData: tokenAddress!,
+            data: tokenAddress!,
             contentAlign: 'center',
           };
         }
@@ -117,7 +120,7 @@ export const ProjectDonations = ({ title }: Props) => {
         }
       }
     },
-    [donations],
+    [donations, ensData],
   );
 
   const [columns, setColumns] = useState<GridColumn[]>(DEFAULT_COLUMNS);
@@ -135,7 +138,10 @@ export const ProjectDonations = ({ title }: Props) => {
     <>
       <pre>
         {JSON.stringify(
-          { addresses: (donations ?? []).map((d) => d?.donorAddress).filter(Boolean) },
+          {
+            ensData: Object.keys(ensData ?? []).length,
+            error: error?.message,
+          },
           undefined,
           '\t',
         )}
@@ -185,7 +191,6 @@ const indexes = [
   'roundId',
   'transactionHash',
   'donorAddress',
-  'ens',
   'tokenAddress',
   'amountInUsd',
 ] as const;
@@ -208,13 +213,8 @@ const DEFAULT_COLUMNS: GridColumn[] = [
   },
   {
     id: 'donorAddress',
-    title: 'VOTER WALLET ADDRESS',
+    title: 'VOTER ADDRESS',
     width: 320,
-  },
-  {
-    id: 'ens',
-    title: 'ENS',
-    width: 120,
   },
   {
     id: 'tokenAddress',

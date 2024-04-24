@@ -5,7 +5,8 @@ const makeQueryClient = () =>
     defaultOptions: {
       queries: {
         // Avoid refetching immediately on the client during SSR
-        staleTime: 1000 * 60 * 60, // 1
+        staleTime: 1000 * 60 * 60, // 1hr
+        retry: false,
       },
     },
   });
