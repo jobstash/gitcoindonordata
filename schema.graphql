@@ -603,6 +603,7 @@ type Donation implements Node {
   transactionHash: String
   blockNumber: BigFloat
   tokenAddress: String
+  timestamp: Datetime
   amount: BigFloat
   amountInUsd: Float
   amountInRoundMatchToken: BigFloat
@@ -649,6 +650,9 @@ input DonationCondition {
   """Checks for equality with the object’s `tokenAddress` field."""
   tokenAddress: String
 
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
   """Checks for equality with the object’s `amount` field."""
   amount: BigFloat
 
@@ -692,6 +696,9 @@ input DonationFilter {
 
   """Filter by the object’s `tokenAddress` field."""
   tokenAddress: StringFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
 
   """Filter by the object’s `amount` field."""
   amount: BigFloatFilter
@@ -747,6 +754,8 @@ enum DonationsOrderBy {
   BLOCK_NUMBER_DESC
   TOKEN_ADDRESS_ASC
   TOKEN_ADDRESS_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
   AMOUNT_ASC
   AMOUNT_DESC
   AMOUNT_IN_USD_ASC

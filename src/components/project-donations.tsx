@@ -15,6 +15,7 @@ import { TOKENS } from '@/core/constants';
 // import { useEnsNames } from '@/hooks/use-ens-names';
 import { useEnsSse } from '@/hooks/use-ens-sse';
 import { useProject } from '@/hooks/use-project';
+import { formatDate } from '@/utils/format-date';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ export const ProjectDonations = ({ title }: Props) => {
     (cell: Item): GridCell => {
       const [col, row] = cell;
       const {
-        blockNumber,
+        timestamp,
         roundId,
         transactionHash,
         donorAddress,
@@ -43,13 +44,16 @@ export const ProjectDonations = ({ title }: Props) => {
       } = (donations ?? [])[row]!;
 
       switch (indexes[col]) {
-        case 'blockNumber': {
-          if (!blockNumber) return getDefaultGridCell();
+        case 'timestamp': {
+          if (!timestamp) return getDefaultGridCell();
+
+          const dateText = formatDate(timestamp);
+
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
-            displayData: blockNumber,
-            data: blockNumber,
+            displayData: dateText,
+            data: dateText,
             contentAlign: 'center',
           };
         }
@@ -187,7 +191,7 @@ export const ProjectDonations = ({ title }: Props) => {
 };
 
 const indexes = [
-  'blockNumber',
+  'timestamp',
   'roundId',
   'transactionHash',
   'donorAddress',
@@ -197,9 +201,9 @@ const indexes = [
 
 const DEFAULT_COLUMNS: GridColumn[] = [
   {
-    id: 'blockNumber',
+    id: 'timestamp',
     title: 'DATE',
-    width: 120,
+    width: 140,
   },
   {
     id: 'roundId',
