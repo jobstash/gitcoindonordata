@@ -1,7 +1,6 @@
 import daisyui from 'daisyui';
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
-
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,9 +10,11 @@ const config: Config = {
   theme: {
     extend: {
       colors:{
-        btnFirst: 'rgba(255, 151, 118, 0.5)',
-        btnSecond: 'rgba(95, 148, 188, 0.5)',
-        btnLast: 'rgba(222, 171, 12, 0.5)',
+        bgGrey:'#f9f9f9',
+        greyMid:'#555555',
+        btnFirst: 'rgba(255, 151, 118, 0.6)',
+        btnSecond: 'rgba(95, 148, 188, 0.6)',
+        btnLast: 'rgba(222, 171, 12, 0.6)',
       }
     },
     fontFamily: {

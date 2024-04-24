@@ -11,9 +11,9 @@ interface Props {
 export const StatsSection = ({ title, stats }: Props) => {
   return (
     <div className="flex flex-col gap-8">
-      <span>{title}</span>
+      <span className="text-xl tracking-wide">{title}</span>
 
-      <div className="grid grid-cols-4 gap-8">
+      <div className="-mx-2 flex flex-wrap">
         {stats.map(({ label, content }) => (
           <Stats key={label} label={label} content={content} />
         ))}
@@ -24,10 +24,10 @@ export const StatsSection = ({ title, stats }: Props) => {
 
 const Stats = ({ content, label }: StatsItem) => {
   return (
-    <div className="stats bg-[#F7F7F7] shadow-md">
-      <div className="stat">
-        <div className="stat-value">{content}</div>
-        <div className="stat-desc pt-4">{label}</div>
+    <div className="mb-4 w-1/2 px-2 ">
+      <div className="h-full space-y-3 rounded-lg bg-slate-200 p-4">
+        <div className="font-mono text-[32px] font-normal text-black">{content}</div>
+        <div className="text-sm text-greyMid">{label}</div>
       </div>
     </div>
   );

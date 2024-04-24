@@ -9,7 +9,7 @@ interface Props {
 
 export const Breadcrumbs = ({ links }: Props) => {
   return (
-    <div className="breadcrumbs text-sm">
+    <div className="breadcrumbs py-0 text-sm [&_*]:text-greyMid">
       <ul>
         {[BASE_LINK, ...links].map(({ text, href }) => (
           <li key={href}>

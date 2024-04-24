@@ -54,10 +54,10 @@ export const ProjectRoundStats = ({ title }: Props) => {
   return (
     <div>
       <span>Round stats</span>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="flex flex-wrap">
         {roundInfos.map(
           ({ id, name, chain, totalAmount, contributors, startTime, endTime }) => (
-            <div key={id} className="flex flex-col gap-4 rounded-3xl bg-[#F7F7F7] p-4">
+            <div key={id} className="flex w-1/2 flex-col gap-4 rounded-3xl bg-green-200 p-4">
               <div className="flex w-full items-center justify-between">
                 <div className="flex flex-col gap-2">
                   <span>{name}</span>

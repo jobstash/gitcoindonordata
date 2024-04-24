@@ -20,19 +20,18 @@ export const ProjectInfo = ({ title }: Props) => {
 
   return (
     <>
-      <div>
+      <div className='relative mb-12 mt-6 aspect-video'>
         <ImageWithFallback
           isPriority
           srcList={banners}
           alt={''}
-          className="h-80 w-[1280px] rounded-3xl"
+          className="size-full rounded-3xl object-cover"
         />
-        <ImageWithFallback srcList={logos} alt={''} className="size-32" />
+        <ImageWithFallback srcList={logos} alt={''} className="absolute bottom-0 left-0 -mb-8 ml-6 size-16 border-2 border-white" />
       </div>
-
-      <div className="min-h-20">
-        <span>{name ?? 'Loading Name ...'}</span>
-        <hr />
+      <div className="">
+        <h2 className='pb-2 text-2xl tracking-wide'>{name ?? 'Loading Name ...'}</h2>
+        <hr className='mb-6' />
       </div>
     </>
   );
