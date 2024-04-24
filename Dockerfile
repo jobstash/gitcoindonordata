@@ -24,6 +24,7 @@ RUN adduser --system --uid 1001 nextjs
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
+COPY --from=builder --chown=nextjs:nodejs ./gitcoindonordata/public ./
 COPY --from=builder --chown=nextjs:nodejs ./gitcoindonordata/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs ./gitcoindonordata/.next/static ./.next/static
 
