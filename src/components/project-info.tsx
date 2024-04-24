@@ -20,17 +20,17 @@ export const ProjectInfo = ({ title }: Props) => {
 
   return (
     <>
-      <div className='relative mb-12 mt-6 aspect-video'>
+      <div className='relative mb-12 mt-6 aspect-video md:mb-28 md:aspect-auto md:h-[320px] md:w-full'>
         <ImageWithFallback
           isPriority
           srcList={banners}
           alt={''}
           className="size-full rounded-3xl object-cover"
         />
-        <ImageWithFallback srcList={logos} alt={''} className="absolute bottom-0 left-0 -mb-8 ml-6 size-16 border-2 border-white" />
+        <ImageWithFallback srcList={logos} alt={''} className="absolute bottom-0 left-0 -mb-8 ml-6 size-16 border-2 border-white md:-mb-16 md:ml-7 md:size-28" />
       </div>
       <div className="">
-        <h2 className='pb-2 text-2xl tracking-wide'>{name ?? 'Loading Name ...'}</h2>
+        <h2 className='pb-2 text-2xl tracking-wide md:pb-3 md:text-4xl'>{name ?? 'Loading Name ...'}</h2>
         <hr className='mb-6' />
       </div>
     </>

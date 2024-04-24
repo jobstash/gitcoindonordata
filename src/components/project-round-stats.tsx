@@ -57,15 +57,15 @@ export const ProjectRoundStats = ({ title }: Props) => {
       <div className="-mx-2 flex flex-wrap">
         {roundInfos.map(
           ({ id, name, chain, totalAmount, contributors, startTime, endTime }) => (
-            <div key={id} className="mb-4 flex w-1/2 flex-col px-2">
-              <div className="h-full space-y-2 rounded-xl bg-slate-200 p-4">
+            <div key={id} className="mb-4 flex w-1/2 flex-col px-2 md:w-1/3">
+              <div className="h-full space-y-2 rounded-xl bg-slate-200 p-4 md:space-y-3 md:p-6">
                 <div className="">
                   <h3 className='text-base font-normal tracking-wide'>{name}</h3>
                 </div>
-                <div className='flex items-center'>
+                <div className='flex items-center md:items-start md:justify-between'>
                   <div>
                     <span className='text-sm font-normal text-greyMid'>{`${startTime} - ${endTime}`}</span>
-                    {chain?.name && <span className='block pt-1 text-sm font-normal text-greyMid'>{chain.name}</span>}
+                    {chain?.name && <span className='block  text-sm font-normal text-greyMid'>{chain.name}</span>}
                   </div>
                   {chain?.logo && (
                     <div>
@@ -82,7 +82,7 @@ export const ProjectRoundStats = ({ title }: Props) => {
                 </span>
 
                 <button
-                  className="mx-auto block cursor-pointer rounded-lg bg-greenBtn px-3 py-2 font-mono text-sm"
+                  className="mx-auto block cursor-pointer rounded-lg bg-greenBtn px-3 py-2 font-mono text-sm md:mt-2 md:w-full"
                   onClick={() => push(`/projects/${normalizeString(projectName)}/rounds/${id}`)}
                 >
                   View round

@@ -24,8 +24,8 @@ export const StatsSection = ({ title, stats }: Props) => {
 
 const Stats = ({ content, label }: StatsItem) => {
   return (
-    <div className="mb-4 w-1/2 px-2">
-      <div className="h-full space-y-3 rounded-xl bg-slate-200 p-4">
+    <div className="mb-4 w-1/2 px-2 md:w-1/4">
+      <div className="h-full space-y-3 rounded-xl bg-slate-200 p-4 md:p-6">
         <div className="font-mono text-[32px] font-normal text-black">{content}</div>
         <div className="text-sm text-greyMid">{label}</div>
       </div>
