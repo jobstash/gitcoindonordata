@@ -12,6 +12,7 @@ const config: Config = {
       colors:{
         bgGrey:'#f9f9f9',
         greyMid:'#555555',
+        greenBtn:'#D2F2EF',
         btnFirst: 'rgba(255, 151, 118, 0.6)',
         btnSecond: 'rgba(95, 148, 188, 0.6)',
         btnLast: 'rgba(222, 171, 12, 0.6)',
