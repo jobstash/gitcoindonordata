@@ -203,7 +203,7 @@ const DEFAULT_COLUMNS: GridColumn[] = [
   {
     id: 'timestamp',
     title: 'DATE',
-    width: 140,
+    width: 180,
   },
   {
     id: 'roundId',
