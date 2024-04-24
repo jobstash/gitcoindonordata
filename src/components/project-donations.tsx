@@ -203,7 +203,7 @@ const DEFAULT_COLUMNS: GridColumn[] = [
   {
     id: 'timestamp',
     title: 'DATE',
-    width: 180,
+    width: 130,
   },
   {
     id: 'roundId',
@@ -222,12 +222,12 @@ const DEFAULT_COLUMNS: GridColumn[] = [
   },
   {
     id: 'tokenAddress',
-    title: 'TOKEN NAME',
-    width: 320,
+    title: 'TOKEN',
+    width: 60,
   },
   {
     id: 'amountInUsd',
-    title: 'AMOUNT (USD)',
+    title: 'USD',
     width: 120,
   },
 ];
