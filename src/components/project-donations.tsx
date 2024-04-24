@@ -26,8 +26,8 @@ export const ProjectDonations = ({ title }: Props) => {
   const donations = (data ?? []).flatMap((d) => d.applications?.flatMap((a) => a.donations));
 
   const addresses = donations.map((d) => d?.donorAddress).filter(Boolean) as string[];
-  // const { data: ensData } = useEnsNames(addresses.slice(0, 100));
-  const { data: ensData, error } = useEnsSse(addresses.slice(0, 100));
+  // const { data: ensData, error } = useEnsNames(addresses.slice(0, 10));
+  const { data: ensData } = useEnsSse(addresses);
 
   const getContent = useCallback(
     (cell: Item): GridCell => {
@@ -36,7 +36,7 @@ export const ProjectDonations = ({ title }: Props) => {
         blockNumber,
         roundId,
         transactionHash,
-        // donorAddress,
+        donorAddress,
         tokenAddress,
         chainId,
         amountInUsd,
@@ -75,17 +75,17 @@ export const ProjectDonations = ({ title }: Props) => {
         }
 
         case 'donorAddress': {
-          // if (!ensData)
-          //   return { kind: GridCellKind.Loading, allowOverlay: false, contentAlign: 'center' };
-
-          // const ens =
-          //   donorAddress && donorAddress in ensData ? ensData[donorAddress] : donorAddress!;
+          const text = !ensData
+            ? `${donorAddress} [---]`
+            : Object.hasOwn(ensData, donorAddress!) && !!ensData[donorAddress!].name
+              ? ensData[donorAddress!].name
+              : donorAddress!;
 
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
-            displayData: tokenAddress!,
-            data: tokenAddress!,
+            displayData: text,
+            data: text,
             contentAlign: 'center',
           };
         }
@@ -136,16 +136,16 @@ export const ProjectDonations = ({ title }: Props) => {
 
   return (
     <>
-      <pre>
+      {/* <pre>
         {JSON.stringify(
           {
-            ensData: Object.keys(ensData ?? []).length,
+            ensData,
             error: error?.message,
           },
           undefined,
           '\t',
         )}
-      </pre>
+      </pre> */}
       <DataEditor
         getCellContent={getContent}
         columns={columns}
