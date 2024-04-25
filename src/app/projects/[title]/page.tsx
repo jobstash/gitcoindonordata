@@ -7,8 +7,8 @@ import { ProjectInfo } from '@/components/project-info';
 import { ProjectRoundStats } from '@/components/project-round-stats';
 import { ProjectStats } from '@/components/project-stats';
 
-const ProjectDonations = dynamic(
-  () => import('@/components/project-donations').then((m) => m.ProjectDonations),
+const DonationsTable = dynamic(
+  () => import('@/components/donations-table').then((m) => m.DonationsTable),
   {
     ssr: false,
     loading: () => <p>Loading donations ...</p>,
@@ -28,7 +28,7 @@ const ProjectPage = ({ params: { title } }: Props) => {
       <ProjectInfo title={title} />
       <ProjectStats title={title} />
       <ProjectRoundStats title={title} />
-      <ProjectDonations title={title} />
+      <DonationsTable title={title} />
     </div>
   );
 };

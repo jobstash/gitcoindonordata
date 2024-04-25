@@ -4,27 +4,20 @@ import dynamic from 'next/dynamic';
 
 import { DataEditor } from '@glideapps/glide-data-grid';
 
-import { Donation } from '@/gql/graphql';
 import { useDonationsTable } from '@/hooks/use-donations-table';
-import { useEnsSse } from '@/hooks/use-ens-sse';
-import { useProject } from '@/hooks/use-project';
 
 interface Props {
   title: string;
+  roundId?: string;
 }
 
-export const ProjectDonations = ({ title }: Props) => {
-  const { data } = useProject(title);
+export const DonationsTable = ({ title, roundId }: Props) => {
+  const { isPending, donations, columns, getCellContent, defaultProps, onColumnResize } =
+    useDonationsTable(title, roundId);
 
-  const donations = ((data ?? []).flatMap((d) => d.applications?.flatMap((a) => a.donations)) ??
-    []) as Donation[];
+  if (isPending) return <p>Loading Table ...</p>;
+  if (donations.length === 0) return <p>This project has not yet received any donations.</p>;
 
-  const addresses = donations.map((d) => d?.donorAddress).filter(Boolean) as string[];
-
-  const { columns, getCellContent, defaultProps, onColumnResize, updateEnsName } =
-    useDonationsTable(donations);
-
-  useEnsSse(addresses.slice(0, 200), updateEnsName);
   return (
     <>
       <DonationsCSVButton donations={donations} />

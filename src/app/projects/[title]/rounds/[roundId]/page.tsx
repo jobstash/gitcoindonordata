@@ -1,3 +1,4 @@
+import { DonationsTable } from '@/components/donations-table';
 import { ProjectInfo } from '@/components/project-info';
 import { RoundBreadcrumbs } from '@/components/round-breadcrumbs';
 import { RoundInfo } from '@/components/round-info';
@@ -17,6 +18,7 @@ const RoundPage = ({ params: { title, roundId } }: Props) => {
       <ProjectInfo title={title} />
       <RoundInfo title={title} roundId={roundId} />
       <RoundStats title={title} roundId={roundId} />
+      <DonationsTable title={title} roundId={roundId} />
     </div>
   );
 };

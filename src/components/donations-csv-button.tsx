@@ -26,15 +26,17 @@ export const DonationsCSVButton = ({ donations }: Props) => {
 
   return (
     <div className="max-w-40">
-      <CSVLink
-        data={csvData}
-        target="_blank"
-        filename="gitcoindonordata.csv"
-        className="btn btn-sm flex gap-4"
-      >
-        <DownloadIcon />
-        <span>Download CSV</span>
-      </CSVLink>
+      {donations.length > 0 ? (
+        <CSVLink
+          data={csvData}
+          target="_blank"
+          filename="gitcoindonordata.csv"
+          className="btn btn-sm flex gap-4"
+        >
+          <DownloadIcon />
+          <span>Download CSV</span>
+        </CSVLink>
+      ) : null}
     </div>
   );
 };
