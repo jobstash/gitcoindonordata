@@ -25,7 +25,7 @@ export const DonationsCSVButton = ({ donations }: Props) => {
   );
 
   return (
-    <div className="max-w-40 pb-8">
+    <div className="pb-8 lg:max-w-48">
       {donations.length > 0 ? (
         <CSVLink
           data={csvData}

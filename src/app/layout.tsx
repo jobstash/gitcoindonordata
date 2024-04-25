@@ -1,6 +1,7 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
+import type { Viewport } from 'next'
 import { Inter } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
@@ -10,6 +11,10 @@ import { ReactQueryProvider } from '@/providers/react-query-client';
 import { getQueryClient } from '@/utils/get-query-client';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const viewport: Viewport = {
+  userScalable: false,
+}
 
 export const metadata: Metadata = {
   title: 'Gitcoin Donor Data',

@@ -25,7 +25,7 @@ export const ImageWithFallback = ({ srcList, alt, className, isPriority }: Props
 
   return (
     <div
-      className={cn('relative size-10 overflow-hidden rounded-full object-cover', className)}
+      className={cn('relative size-10 overflow-hidden rounded-full [&>img]:object-cover', className)}
     >
       {index < srcList.length ? (
         <Image
