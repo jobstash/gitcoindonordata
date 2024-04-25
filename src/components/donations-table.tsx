@@ -12,8 +12,16 @@ interface Props {
 }
 
 export const DonationsTable = ({ title, roundId }: Props) => {
-  const { isPending, donations, columns, getCellContent, defaultProps, onColumnResize } =
-    useDonationsTable(title, roundId);
+  const {
+    isPending,
+    donations,
+    columns,
+    getCellContent,
+    defaultProps,
+    onColumnResize,
+    onItemHovered,
+    getRowThemeOverride,
+  } = useDonationsTable(title, roundId);
 
   if (isPending) return <p>Loading Table ...</p>;
   if (donations.length === 0) return <p>This project has not yet received any donations.</p>;
@@ -21,13 +29,17 @@ export const DonationsTable = ({ title, roundId }: Props) => {
   return (
     <>
       <DonationsCSVButton donations={donations} />
-      <DataEditor
-        {...defaultProps}
-        getCellContent={getCellContent}
-        columns={columns}
-        rows={donations.length}
-        onColumnResize={onColumnResize}
-      />
+      <div className="overflow-hidden rounded-xl" style={{ height: 600 }}>
+        <DataEditor
+          {...defaultProps}
+          getCellContent={getCellContent}
+          columns={columns}
+          rows={donations.length}
+          onColumnResize={onColumnResize}
+          onItemHovered={onItemHovered}
+          getRowThemeOverride={getRowThemeOverride}
+        />
+      </div>
     </>
   );
 };

@@ -3,9 +3,11 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   BaseGridCell,
   DataEditorProps,
+  GetRowThemeCallback,
   GridCell,
   GridCellKind,
   GridColumn,
+  GridMouseEventArgs,
   Item,
 } from '@glideapps/glide-data-grid';
 
@@ -94,6 +96,26 @@ export const useDonationsTable = (title: string, roundId?: string) => {
     cache.current.set(col, row, val);
   }, []);
 
+  const [hoverRow, setHoverRow] = useState<number | undefined>();
+  const onItemHovered = useCallback((args: GridMouseEventArgs) => {
+    const [_, row] = args.location;
+    setHoverRow(args.kind !== 'cell' ? undefined : row);
+  }, []);
+
+  const getRowThemeOverride = useCallback<GetRowThemeCallback>(
+    (row) => {
+      const isHovered = row === hoverRow;
+      const isEven = row % 2 === 0;
+
+      const bgCell = isHovered ? '#e5fffc' : isEven ? '#EBEBEB' : '#fff';
+
+      return {
+        bgCell,
+      };
+    },
+    [hoverRow],
+  );
+
   return {
     isPending,
     donations: donations,
@@ -102,6 +124,8 @@ export const useDonationsTable = (title: string, roundId?: string) => {
     getCellContent,
     defaultProps: DEFAULT_TABLE_PROPS,
     onColumnResize,
+    onItemHovered,
+    getRowThemeOverride,
   };
 };
 
@@ -133,6 +157,10 @@ const DEFAULT_TABLE_PROPS: Partial<DataEditorProps> = {
   height: 600,
   rowHeight: 40,
   getCellsForSelection: true,
+  rowMarkers: {
+    kind: 'clickable-number',
+    checkboxStyle: 'square',
+  },
 };
 
 const columnIds = DONATIONS_COLUMNS.map((column) => column.id!);
