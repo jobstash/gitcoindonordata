@@ -14,8 +14,11 @@ export const ProjectInfo = ({ title }: Props) => {
 
   if (!data) return <p>Loading Banner ...</p>;
 
-  const banners = data.map((p) => `${IPFS_URL}/${p.metadata?.bannerImg}`);
-  const logos = data.map((p) => `${IPFS_URL}/${p.metadata?.logoImg}`);
+  const banners = data.map((p) => p.metadata?.bannerImg ? `${IPFS_URL}/${p.metadata?.bannerImg}` : 'https://builder.gitcoin.co/static/media/default-project-banner.2fc741d75e7b2a8ed935.png');
+  const logos = data.map((p) => p.metadata?.logoImg ? `${IPFS_URL}/${p.metadata?.logoImg}` : 'https://builder.gitcoin.co/static/media/default-project-logo.724472a8d8c6e410ed8c.png');
+
+
+  // const logos = data.map((p) => `${IPFS_URL}/${p.metadata?.logoImg}`);
   const name = data.map((d) => d.name)[0];
 
   return (

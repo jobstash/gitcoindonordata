@@ -19,6 +19,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'builder.gitcoin.co',
+        pathname: '/static/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'icons.llamao.fi',
         pathname: '/icons/**',
       },
