@@ -65,8 +65,8 @@ export const useDonationsTable = (donations: Donation[]) => {
       }
     }
 
-    if (col === null) throw new Error('ENS Update Error: col not found');
-    if (row === null) throw new Error('ENS Update Error: row not found');
+    if (col === null) return;
+    if (row === null) return;
 
     setCellCacheValue([col, row], {
       kind: GridCellKind.Text,
