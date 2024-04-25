@@ -1,7 +1,7 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import type { Viewport } from 'next'
+import type { Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const viewport: Viewport = {
   userScalable: false,
-}
+};
 
 export const metadata: Metadata = {
   title: 'Gitcoin Donor Data',
@@ -55,7 +55,8 @@ const RootLayout = async ({ children }: Props) => {
           </main>
           <footer className="bg-bgGrey p-4 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
-              Built with ❤️‍🔥 by the <a href="https://jobstash.xyz">JobStash</a> Team
+              Built with ❤️‍🔥 by the <a href="https://jobstash.xyz">JobStash</a> Team. Support our{' '}
+              <a href="https://explorer.gitcoin.co/#/round/42161/25/121">GitCoin Grant here</a>
             </div>
           </footer>
         </div>
