@@ -18,7 +18,7 @@ export const RoundStats = ({ title, roundId }: Props) => {
 
   const stats = [
     { label: 'Est. funding received', content: estimatedFunds },
-    { label: 'No. of contributors', content: contributors },
+    { label: 'No. of contributions', content: contributors },
     { label: 'Unique contributors', content: uniqueContributors },
     { label: 'Avg. contribution', content: avgContribution },
   ];
