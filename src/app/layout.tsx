@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import { ReactQueryProvider } from '@/providers/react-query-client';
@@ -54,6 +55,7 @@ const RootLayout = async ({ children }: Props) => {
           </footer>
         </div>
       </body>
+      {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-FZZB7CVNXL" />}
     </html>
   );
 };
