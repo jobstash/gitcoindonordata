@@ -29,7 +29,7 @@ export const useDonationsTable = (title: string, roundId?: string) => {
   }, [projectData, roundId]);
 
   const addresses = donations.map((d) => d?.donorAddress).filter(Boolean) as string[];
-  useEnsSse(addresses.slice(0, 200), (donorAddress: string, ensName: string) => {
+  useEnsSse(addresses, (donorAddress: string, ensName: string) => {
     let col: number | null = null;
     let row: number | null = null;
 
