@@ -151,6 +151,7 @@ export const ProjectDonations = ({ title }: Props) => {
         )}
       </pre> */}
       <DataEditor
+        getCellsForSelection
         getCellContent={getContent}
         columns={columns}
         rows={donations?.length ?? 0}
