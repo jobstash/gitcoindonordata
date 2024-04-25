@@ -142,6 +142,7 @@ export const TOKENS = {
   '713715:0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee': 'SEI',
   '713715:0x26841a0a5d958b128209f4ea9a1dd7e61558c330': 'WSEI',
   '424:0x0000000000000000000000000000000000000000': 'ETH',
+  '424:0x6c121674ba6736644a7e73a8741407fe8a5ee5ba': 'DAI',
 };
 
 export const ENS_ENDPOINT = 'https://gitcoin.enstate.rs';
