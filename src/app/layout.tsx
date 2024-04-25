@@ -55,8 +55,18 @@ const RootLayout = async ({ children }: Props) => {
           </main>
           <footer className="bg-bgGrey p-4 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
-              Built with ❤️‍🔥 by the <a href="https://jobstash.xyz">JobStash</a> Team. Support our{' '}
-              <a href="https://explorer.gitcoin.co/#/round/42161/25/121">GitCoin Grant here</a>
+              Built with ❤️‍🔥 by the{' '}
+              <a rel="noreferrer" target="_blank" href="https://jobstash.xyz">
+                JobStash
+              </a>{' '}
+              Team. Support our{' '}
+              <a
+                rel="noreferrer"
+                target="_blank"
+                href="https://explorer.gitcoin.co/#/round/42161/25/121"
+              >
+                GitCoin Grant here
+              </a>
             </div>
           </footer>
         </div>
