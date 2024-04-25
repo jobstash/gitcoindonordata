@@ -14,8 +14,9 @@ import {
 import { useEnsSse } from './use-ens-sse';
 import { useProject } from './use-project';
 
-import { DONATIONS_COLUMNS } from '@/core/constants';
+import { CHAINS, DONATIONS_COLUMNS } from '@/core/constants';
 import { Donation } from '@/gql/graphql';
+import { formatAddress } from '@/utils/format-address';
 import { formatDate } from '@/utils/format-date';
 import { getTokenName } from '@/utils/get-token-name';
 
@@ -161,6 +162,9 @@ const DEFAULT_TABLE_PROPS: Partial<DataEditorProps> = {
     kind: 'clickable-number',
     checkboxStyle: 'square',
   },
+  theme: {
+    linkColor: '#2a7fc9',
+  },
 };
 
 const columnIds = DONATIONS_COLUMNS.map((column) => column.id!);
@@ -218,13 +222,23 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
       };
     }
     case 'transactionHash': {
+      const explorer = CHAINS.find((c) => c.id === `${chainId}`)?.explorer;
+      if (!explorer) return getDefaultGridCell();
       if (!transactionHash) return getDefaultGridCell();
+
+      const link = `${explorer}${transactionHash}`;
+
       return {
-        kind: GridCellKind.Text,
+        kind: GridCellKind.Uri,
         allowOverlay: false,
-        displayData: transactionHash,
-        data: transactionHash,
+        displayData: formatAddress(transactionHash),
+        data: link,
+        hoverEffect: true,
         contentAlign: 'center',
+        onClickUri(args) {
+          args.preventDefault();
+          window.open(link, '_blank');
+        },
       };
     }
 
@@ -232,8 +246,8 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
       return {
         kind: GridCellKind.Text,
         allowOverlay: false,
-        displayData: donorAddress!,
-        data: donorAddress!,
+        displayData: formatAddress(donorAddress!),
+        data: formatAddress(donorAddress!),
         contentAlign: 'center',
       };
     }

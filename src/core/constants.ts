@@ -150,12 +150,12 @@ export const DONATIONS_COLUMNS: GridColumn[] = [
   {
     id: 'timestamp' as const,
     title: 'DATE',
-    width: 130,
+    grow: 1,
   },
   {
     id: 'roundId',
     title: 'ROUND',
-    width: 320,
+    grow: 1,
   },
   {
     id: 'transactionHash',
@@ -165,16 +165,16 @@ export const DONATIONS_COLUMNS: GridColumn[] = [
   {
     id: 'donorAddress',
     title: 'VOTER ADDRESS',
-    width: 320,
+    grow: 1,
   },
   {
     id: 'tokenAddress',
     title: 'TOKEN',
-    width: 60,
+    grow: 1,
   },
   {
     id: 'amountInUsd',
     title: 'USD',
-    width: 120,
+    grow: 1,
   },
 ] as const;
