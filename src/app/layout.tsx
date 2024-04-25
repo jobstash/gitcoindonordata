@@ -48,7 +48,9 @@ const RootLayout = async ({ children }: Props) => {
             </div>
           </main>
           <footer className="bg-bgGrey p-4 md:px-8">
-            <div className="mx-auto w-full max-w-7xl">Built with ❤️‍🔥 by the JobStash Team</div>
+            <div className="mx-auto w-full max-w-7xl">
+              Built with ❤️‍🔥 by the <a href="https://jobstash.xyz">JobStash</a> Team
+            </div>
           </footer>
         </div>
       </body>
