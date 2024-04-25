@@ -35,7 +35,7 @@ export const ProjectDonations = ({ title }: Props) => {
       const [col, row] = cell;
       const {
         timestamp,
-        roundId,
+        round,
         transactionHash,
         donorAddress,
         tokenAddress,
@@ -58,12 +58,12 @@ export const ProjectDonations = ({ title }: Props) => {
           };
         }
         case 'roundId': {
-          if (!roundId) return getDefaultGridCell();
+          if (!round?.roundMetadata?.name) return getDefaultGridCell();
           return {
             kind: GridCellKind.Text,
             allowOverlay: false,
-            displayData: roundId,
-            data: roundId,
+            displayData: round.roundMetadata.name,
+            data: round.roundMetadata.name,
             contentAlign: 'center',
           };
         }

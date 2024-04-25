@@ -21,7 +21,10 @@ export const getProjectsByIds = graphql(`
           amountInUsd
           transactionHash
           donorAddress
-          roundId
+          round {
+            id
+            roundMetadata
+          }
           tokenAddress
           timestamp
         }
