@@ -9,15 +9,16 @@ import {
   Item,
 } from '@glideapps/glide-data-grid';
 
-import { TOKENS } from '@/core/constants';
+import { DONATIONS_COLUMNS } from '@/core/constants';
 import { Donation } from '@/gql/graphql';
 import { formatDate } from '@/utils/format-date';
+import { getTokenName } from '@/utils/get-token-name';
 
 export const useDonationsTable = (donations: Donation[]) => {
   const cache = useRef<ContentCache>(new ContentCache());
 
   const [swappedCount, setSwappedCount] = useState(0);
-  const [columns, setColumns] = useState<GridColumn[]>(DEFAULT_COLUMNS);
+  const [columns, setColumns] = useState<GridColumn[]>(DONATIONS_COLUMNS);
 
   const onColumnResize = useCallback((column: GridColumn, newSize: number) => {
     setColumns((prev) => {
@@ -119,40 +120,7 @@ const DEFAULT_TABLE_PROPS: Partial<DataEditorProps> = {
   getCellsForSelection: true,
 };
 
-const DEFAULT_COLUMNS: GridColumn[] = [
-  {
-    id: 'timestamp' as const,
-    title: 'DATE',
-    width: 130,
-  },
-  {
-    id: 'roundId',
-    title: 'ROUND',
-    width: 320,
-  },
-  {
-    id: 'transactionHash',
-    title: 'TXN HASH',
-    grow: 1,
-  },
-  {
-    id: 'donorAddress',
-    title: 'VOTER ADDRESS',
-    width: 320,
-  },
-  {
-    id: 'tokenAddress',
-    title: 'TOKEN',
-    width: 60,
-  },
-  {
-    id: 'amountInUsd',
-    title: 'USD',
-    width: 120,
-  },
-] as const;
-
-const columnIds = DEFAULT_COLUMNS.map((column) => column.id!);
+const columnIds = DONATIONS_COLUMNS.map((column) => column.id!);
 
 const getDefaultGridCell = (args?: {
   text?: string;
@@ -227,9 +195,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
       };
     }
     case 'tokenAddress': {
-      const tokenKey = `${chainId}:${tokenAddress?.toLowerCase()}`;
-      const token =
-        tokenAddress && tokenKey in TOKENS ? TOKENS[tokenKey as keyof typeof TOKENS] : tokenKey;
+      const token = getTokenName(chainId!, tokenAddress!);
 
       return {
         kind: GridCellKind.Text,
