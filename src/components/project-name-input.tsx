@@ -1,12 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { AutoComplete } from './autocomplete';
 
 import { WithValue } from '@/core/types';
 import { useProjectNames } from '@/hooks/use-project-names';
+import { cn } from '@/utils/cn';
 import { normalizeString } from '@/utils/normalize-string';
 
 export const ProjectNameInput = () => {
@@ -32,9 +33,10 @@ export const ProjectNameInput = () => {
   };
 
   const { push } = useRouter();
+  const [isPendingPush, startPushTransition] = useTransition();
   const onClickFetch = () => {
     if (currentItem) {
-      push(`/projects/${currentItem.key}`);
+      startPushTransition(() => push(`/projects/${currentItem.key}`));
     }
   };
 
@@ -58,6 +60,9 @@ export const ProjectNameInput = () => {
     }
   }, [data, search]);
 
+  const isLoading = !data || isPendingPush;
+  const isLoadingBtn = isLoading || !currentItem || !search;
+
   return (
     <>
       <AutoComplete
@@ -67,14 +72,20 @@ export const ProjectNameInput = () => {
         onChangeInput={onChangeInput}
         onSelect={onSelect}
         renderItem={renderItem}
-        isLoading={!data}
+        isLoading={isLoading}
       />
-      <div className='rounded-md border border-black/20 '>
-        <button className="cursor-pointer rounded-md bg-gradient-to-br from-btnFirst via-btnSecond to-btnLast px-8 py-3 font-mono hover:opacity-75" disabled={!currentItem || !search} onClick={onClickFetch}>
+      <div className="rounded-md border border-black/20 ">
+        <button
+          className={cn(
+            'btn cursor-pointer rounded-md bg-gradient-to-br from-btnFirst via-btnSecond to-btnLast px-8 py-3 font-mono hover:opacity-75',
+            { 'btn-disabled': isLoadingBtn },
+          )}
+          disabled={isLoadingBtn}
+          onClick={onClickFetch}
+        >
           Fetch Data
         </button>
       </div>
     </>
   );
 };
-
