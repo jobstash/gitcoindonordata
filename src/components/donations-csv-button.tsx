@@ -3,6 +3,7 @@ import { CSVLink } from 'react-csv';
 
 import { DONATIONS_COLUMNS } from '@/core/constants';
 import { Donation } from '@/gql/graphql';
+import { sendEvent } from '@/utils/send-event';
 
 interface Props {
   donations: Donation[];
@@ -24,6 +25,10 @@ export const DonationsCSVButton = ({ donations }: Props) => {
     [donations],
   );
 
+  const onClick = () => {
+    sendEvent('buttonClicked', `Downlaod CSV: "${window?.location.href}"`);
+  };
+
   return (
     <div className="pb-8 lg:max-w-48">
       {donations.length > 0 ? (
@@ -32,6 +37,7 @@ export const DonationsCSVButton = ({ donations }: Props) => {
           target="_blank"
           filename="gitcoindonordata.csv"
           className="btn btn-sm flex gap-4"
+          onClick={onClick}
         >
           <DownloadIcon />
           <span>Download CSV</span>

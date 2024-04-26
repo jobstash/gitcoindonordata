@@ -9,6 +9,7 @@ import { useProject } from '@/hooks/use-project';
 import { cn } from '@/utils/cn';
 import { formatDate } from '@/utils/format-date';
 import { normalizeString } from '@/utils/normalize-string';
+import { sendEvent } from '@/utils/send-event';
 
 interface Props {
   title: string;
@@ -51,8 +52,9 @@ export const ProjectRoundStats = ({ title }: Props) => {
   const [viewedRoundId, setViewedRoundId] = useState('');
   const [isPendingPush, startPushTransition] = useTransition();
 
-  const onClickViewRound = (id: string) => {
+  const onClickViewRound = (id: string, name: string) => {
     setViewedRoundId(id);
+    sendEvent('buttonClicked', `View Round: "${name}"`);
     startPushTransition(() => {
       push(`/projects/${normalizeString(projectName)}/rounds/${id}`);
     });
@@ -107,7 +109,7 @@ export const ProjectRoundStats = ({ title }: Props) => {
                       'btn relative mx-auto flex cursor-pointer items-center rounded-lg bg-greenBtn px-3 py-2 font-mono text-sm md:mt-2 md:w-full',
                       { 'btn-disabled': isLoadingBtn },
                     )}
-                    onClick={() => onClickViewRound(id)}
+                    onClick={() => onClickViewRound(id, name)}
                   >
                     <span> View round</span>
 

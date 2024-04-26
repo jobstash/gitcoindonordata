@@ -19,6 +19,7 @@ import { Donation } from '@/gql/graphql';
 import { formatAddress } from '@/utils/format-address';
 import { formatDate } from '@/utils/format-date';
 import { getTokenName } from '@/utils/get-token-name';
+import { sendEvent } from '@/utils/send-event';
 
 export const useDonationsTable = (title: string, roundId?: string) => {
   const { data: projectData, isPending } = useProject(title);
@@ -86,13 +87,13 @@ export const useDonationsTable = (title: string, roundId?: string) => {
       let val = cache.current.get(col, row) as GridCell;
       if (val === undefined) {
         const donation = donations[row];
-        val = getDonationCellContent(donation, col);
+        val = getDonationCellContent(donation, col, title);
         cache.current.set(col, row, val);
       }
 
       return val;
     },
-    [donations],
+    [donations, title],
   );
 
   const setCellCacheValue = useCallback(([col, row]: Item, val: GridCell): void => {
@@ -188,7 +189,11 @@ const getDefaultGridCell = (args?: {
   };
 };
 
-const getDonationCellContent = (donation: Donation, columnIndex: number): GridCell => {
+const getDonationCellContent = (
+  donation: Donation,
+  columnIndex: number,
+  title: string,
+): GridCell => {
   const {
     timestamp,
     round,
@@ -241,6 +246,8 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
         contentAlign: 'center',
         onClickUri(args) {
           args.preventDefault();
+
+          sendEvent('buttonClicked', `Txn Link: "${title}:${transactionHash}"`);
           window.open(link, '_blank');
         },
         copyData: transactionHash,

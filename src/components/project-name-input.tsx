@@ -9,6 +9,7 @@ import { WithValue } from '@/core/types';
 import { useProjectNames } from '@/hooks/use-project-names';
 import { cn } from '@/utils/cn';
 import { normalizeString } from '@/utils/normalize-string';
+import { sendEvent } from '@/utils/send-event';
 
 export const ProjectNameInput = () => {
   const { data } = useProjectNames();
@@ -36,6 +37,7 @@ export const ProjectNameInput = () => {
   const [isPendingPush, startPushTransition] = useTransition();
   const onClickFetch = () => {
     if (currentItem) {
+      sendEvent('buttonClicked', `Fetch Data: "${currentItem.value}"`);
       startPushTransition(() => push(`/projects/${currentItem.key}`));
     }
   };
