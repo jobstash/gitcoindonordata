@@ -3,6 +3,7 @@ import { ProjectInfo } from '@/components/project-info';
 import { RoundBreadcrumbs } from '@/components/round-breadcrumbs';
 import { RoundInfo } from '@/components/round-info';
 import { RoundStats } from '@/components/round-stats';
+import { getProjectNameFromTitle } from '@/utils/get-project-name-from-title';
 
 interface Props {
   params: {
@@ -23,3 +24,9 @@ const RoundPage = ({ params: { title, roundId } }: Props) => {
   );
 };
 export default RoundPage;
+
+export const generateMetadata = async ({ params: { title } }: Props) => {
+  const name = await getProjectNameFromTitle(title);
+
+  return { title: name };
+};

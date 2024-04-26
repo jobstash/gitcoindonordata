@@ -6,7 +6,11 @@ import { Inter } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import request from 'graphql-request';
 
+import { GQL_ENDPOINT, STALETIME } from '@/core/constants';
+import { queryKeys } from '@/core/query-keys';
+import { getProjectNames } from '@/data/get-project-names';
 import { ReactQueryProvider } from '@/providers/react-query-client';
 import { getQueryClient } from '@/utils/get-query-client';
 
@@ -17,7 +21,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Gitcoin Donor Data',
+  title: {
+    template: '%s | Gitcoin',
+    default: 'Gitcoin Donor Data',
+  },
   description: 'Track the pulse of your Gitcoin projects with real-time insights.',
 };
 
@@ -27,6 +34,12 @@ interface Props {
 
 const RootLayout = async ({ children }: Props) => {
   const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.getProjectNames(),
+    queryFn: () => request(GQL_ENDPOINT, getProjectNames),
+    staleTime: STALETIME.DEFAULT,
+  });
 
   return (
     <html lang="en">

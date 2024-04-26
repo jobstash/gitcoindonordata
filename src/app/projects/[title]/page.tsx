@@ -6,6 +6,7 @@ import { ProjectBreadcrumbs } from '@/components/project-breadcrumbs';
 import { ProjectInfo } from '@/components/project-info';
 import { ProjectRoundStats } from '@/components/project-round-stats';
 import { ProjectStats } from '@/components/project-stats';
+import { getProjectNameFromTitle } from '@/utils/get-project-name-from-title';
 
 const DonationsTable = dynamic(
   () => import('@/components/donations-table').then((m) => m.DonationsTable),
@@ -32,4 +33,11 @@ const ProjectPage = ({ params: { title } }: Props) => {
     </div>
   );
 };
+
 export default ProjectPage;
+
+export const generateMetadata = async ({ params: { title } }: Props) => {
+  const name = await getProjectNameFromTitle(title);
+
+  return { title: name };
+};
