@@ -1,3 +1,5 @@
+import { redirect, RedirectType } from 'next/navigation';
+
 import { DonationsTable } from '@/components/donations-table';
 import { ProjectInfo } from '@/components/project-info';
 import { RoundBreadcrumbs } from '@/components/round-breadcrumbs';
@@ -27,6 +29,7 @@ export default RoundPage;
 
 export const generateMetadata = async ({ params: { title } }: Props) => {
   const name = await getProjectNameFromTitle(title);
+  if (!name) redirect('/', RedirectType.replace);
 
   return { title: name };
 };

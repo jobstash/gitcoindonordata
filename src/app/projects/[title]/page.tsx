@@ -1,6 +1,7 @@
 import '@glideapps/glide-data-grid/dist/index.css';
 
 import dynamic from 'next/dynamic';
+import { redirect, RedirectType } from 'next/navigation';
 
 import { ProjectBreadcrumbs } from '@/components/project-breadcrumbs';
 import { ProjectInfo } from '@/components/project-info';
@@ -38,6 +39,7 @@ export default ProjectPage;
 
 export const generateMetadata = async ({ params: { title } }: Props) => {
   const name = await getProjectNameFromTitle(title);
+  if (!name) redirect('/', RedirectType.replace);
 
   return { title: name };
 };
