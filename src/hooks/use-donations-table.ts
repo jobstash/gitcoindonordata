@@ -211,6 +211,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
         displayData: dateText,
         data: dateText,
         contentAlign: 'center',
+        copyData: timestamp,
       };
     }
     case 'roundId': {
@@ -221,6 +222,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
         displayData: round.roundMetadata.name,
         data: round.roundMetadata.name,
         contentAlign: 'center',
+        copyData: round.id!,
       };
     }
     case 'transactionHash': {
@@ -241,6 +243,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
           args.preventDefault();
           window.open(link, '_blank');
         },
+        copyData: transactionHash,
       };
     }
 
@@ -251,6 +254,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
         displayData: formatAddress(donorAddress!),
         data: formatAddress(donorAddress!),
         contentAlign: 'center',
+        copyData: donorAddress!,
       };
     }
     case 'tokenAddress': {
@@ -272,6 +276,7 @@ const getDonationCellContent = (donation: Donation, columnIndex: number): GridCe
         displayData: `$${amountInUsd.toFixed(2)}`,
         data: amountInUsd.toString(),
         contentAlign: 'center',
+        copyData: `${amountInUsd!}`,
       };
     }
 
