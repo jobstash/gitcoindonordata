@@ -1,5 +1,3 @@
-import '@glideapps/glide-data-grid/dist/index.css';
-
 import dynamic from 'next/dynamic';
 import { redirect, RedirectType } from 'next/navigation';
 

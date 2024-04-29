@@ -1,5 +1,3 @@
-import { GridColumn } from '@glideapps/glide-data-grid';
-
 export const GQL_ENDPOINT = 'https://grants-stack-indexer-v2.gitcoin.co/graphql';
 
 export const STALETIME = {
@@ -147,36 +145,3 @@ export const TOKENS = {
 };
 
 export const ENS_ENDPOINT = 'https://gitcoin.enstate.rs';
-
-export const DONATIONS_COLUMNS: GridColumn[] = [
-  {
-    id: 'timestamp' as const,
-    title: 'DATE',
-    grow: 1,
-  },
-  {
-    id: 'roundId',
-    title: 'ROUND',
-    grow: 1,
-  },
-  {
-    id: 'transactionHash',
-    title: 'TXN HASH',
-    grow: 1,
-  },
-  {
-    id: 'donorAddress',
-    title: 'VOTER ADDRESS',
-    grow: 1,
-  },
-  {
-    id: 'tokenAddress',
-    title: 'TOKEN',
-    grow: 1,
-  },
-  {
-    id: 'amountInUsd',
-    title: 'USD',
-    grow: 1,
-  },
-] as const;

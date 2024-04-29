@@ -1,0 +1,10 @@
+.ag-theme-material {
+    --ag-odd-row-background-color: rgb(0, 0, 0, 0.05);
+    --ag-header-column-resize-handle-color: rgb(126, 46, 132);
+    --ag-font-size: 14px;
+    --ag-font-family: sans;
+		--ag-border-radius: 16px;
+		--ag-value-change-value-highlight-background-color: #D2F2EF;
+		--ag-selected-row-background-color: #D2F2EF;
+		--ag-checkbox-checked-color: #2A7FC9
+}

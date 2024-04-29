@@ -1,18 +1,18 @@
 import { useMemo } from 'react';
 import { CSVLink } from 'react-csv';
 
-import { DONATIONS_COLUMNS } from '@/core/constants';
-import { Donation } from '@/gql/graphql';
+import { DONATIONS_COLUMNS } from '@/core/misc';
+import { DonationRow } from '@/core/types';
 import { sendEvent } from '@/utils/send-event';
 
 interface Props {
-  donations: Donation[];
+  donations: DonationRow[];
 }
 
 export const DonationsCSVButton = ({ donations }: Props) => {
   const csvData = useMemo(
     () => [
-      [...DONATIONS_COLUMNS.map((d) => d.id!)],
+      [...DONATIONS_COLUMNS.map((d) => d.headerName)],
       ...donations.map((d) => [
         d.timestamp,
         d.round?.roundMetadata.name,

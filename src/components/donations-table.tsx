@@ -1,10 +1,16 @@
 'use client';
 
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-material.css';
+import '@/app/custom-ag-grid.css';
+
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
-import { DataEditor } from '@glideapps/glide-data-grid';
+import { AgGridReact } from 'ag-grid-react';
 
-import { useDonationsTable } from '@/hooks/use-donations-table';
+import { DONATIONS_COLUMNS } from '@/core/misc';
+import { useDonations } from '@/hooks/use-donations';
 
 interface Props {
   title: string;
@@ -12,32 +18,35 @@ interface Props {
 }
 
 export const DonationsTable = ({ title, roundId }: Props) => {
-  const {
-    isPending,
-    donations,
-    columns,
-    getCellContent,
-    defaultProps,
-    onColumnResize,
-    onItemHovered,
-    getRowThemeOverride,
-  } = useDonationsTable(title, roundId);
+  const [isFocused, setIsFocused] = useState(false);
 
-  if (isPending) return <p>Loading Table ...</p>;
+  const { isPending, donations, gridRef, onSelectionChanged } = useDonations(
+    title,
+    roundId,
+    isFocused,
+  );
+
+  if (isPending) return <p>Loading table ...</p>;
   if (donations.length === 0) return <p>This project has not yet received any donations.</p>;
 
   return (
     <>
       <DonationsCSVButton donations={donations} />
-      <div className="overflow-hidden rounded-xl" style={{ height: 600 }}>
-        <DataEditor
-          {...defaultProps}
-          getCellContent={getCellContent}
-          columns={columns}
-          rows={donations.length}
-          onColumnResize={onColumnResize}
-          onItemHovered={onItemHovered}
-          getRowThemeOverride={getRowThemeOverride}
+
+      <div
+        className="ag-theme-material"
+        style={{ height: 600 }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      >
+        <AgGridReact
+          ref={gridRef}
+          getRowId={(r) => r.data.id}
+          rowData={donations}
+          rowSelection="multiple"
+          rowMultiSelectWithClick={true}
+          columnDefs={DONATIONS_COLUMNS}
+          onSelectionChanged={onSelectionChanged}
         />
       </div>
     </>

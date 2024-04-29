@@ -1,5 +1,5 @@
 export const formatDate = (dateStr?: string): string => {
-  if (!dateStr) return '';
+  if (!dateStr) return 'N/A';
 
   const date = new Date(dateStr);
   const year = date.getUTCFullYear();
