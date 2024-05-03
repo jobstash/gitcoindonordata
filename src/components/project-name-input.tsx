@@ -76,11 +76,11 @@ export const ProjectNameInput = () => {
         renderItem={renderItem}
         isLoading={isLoading}
       />
-      <div className="rounded-md border border-black/20 ">
+      <div className="absolute bottom-0 left-0 z-20 w-full">
         <button
           className={cn(
-            'btn cursor-pointer rounded-md bg-gradient-to-br from-btnFirst via-btnSecond to-btnLast px-8 py-3 font-mono hover:opacity-75',
-            { 'btn-disabled': isLoadingBtn },
+            'block h-[80px] w-full cursor-pointer rounded-b-xl bg-[#EBEBEB] px-8 py-3 font-mono text-[24px] font-semibold hover:opacity-75',
+            { '!opacity-30 !cursor-default': isLoadingBtn },
           )}
           disabled={isLoadingBtn}
           onClick={onClickFetch}

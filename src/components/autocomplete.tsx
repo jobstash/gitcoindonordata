@@ -26,7 +26,7 @@ export const AutoComplete = <T extends WithValue>(props: Props<T>) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className={cn('dropdown w-full', { 'dropdown-open': open })}>
+    <div className={cn('dropdown relative z-30 w-full', { 'dropdown-open': open })}>
       <label className="input input-bordered flex items-center gap-2">
         <input
           type="text"
