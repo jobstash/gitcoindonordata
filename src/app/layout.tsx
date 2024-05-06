@@ -43,9 +43,9 @@ const RootLayout = async ({ children }: Props) => {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-bgGrey`}>
         <div className="font-sans font-medium">
-          <header className="relative z-50 p-4 shadow-sm md:px-8">
+          <header className="relative z-50 bg-white/5 p-4 shadow-sm md:px-8">
             <div className="mx-auto w-full max-w-7xl">
               <svg width="27" height="32" fill="none">
                 <path
@@ -59,14 +59,16 @@ const RootLayout = async ({ children }: Props) => {
               </svg>
             </div>
           </header>
-          <main className="flex flex-col bg-bgGrey px-4 py-6 md:px-8">
+          <main className="flex min-h-[calc(100vh-120px)] flex-col px-4 py-6 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
               <ReactQueryProvider>
-                <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                  {children}
+                </HydrationBoundary>
               </ReactQueryProvider>
             </div>
           </main>
-          <footer className="bg-bgGrey p-4 md:px-8">
+          <footer className="relative z-50 bg-white/5 p-4 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
               Built with ❤️‍🔥 by the{' '}
               <a rel="noreferrer" target="_blank" href="https://jobstash.xyz">
