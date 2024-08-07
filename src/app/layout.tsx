@@ -70,15 +70,17 @@ const RootLayout = async ({ children }: Props) => {
           </main>
           <footer className="relative z-50 bg-white/5 p-4 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
-              Built with ❤️‍🔥 by the{' '}
+              Built with ❤️‍🔥 by the {' '}
               <a rel="noreferrer" target="_blank" href="https://jobstash.xyz">
                 JobStash
               </a>{' '}
-              Team. Support our{' '}
+              Team.{' '}
+              We’re building a new project, please support our {' '}
               <a
                 rel="noreferrer"
                 target="_blank"
-                href="https://explorer.gitcoin.co/#/round/42161/25/121"
+                href="https://explorer.gitcoin.co/#/round/42161/385/52"
+                className='underline'
               >
                 GitCoin Grant here
               </a>
