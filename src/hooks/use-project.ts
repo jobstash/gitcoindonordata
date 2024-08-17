@@ -24,7 +24,9 @@ export const useProject = (title: string) => {
     staleTime: STALETIME.DEFAULT,
     enabled: !!projectNames,
     select: (data) => {
-      const result = data.projects!.sort((a, b) => b.metadata.createdAt - a.metadata.createdAt);
+      const result = data
+        .projects!.sort((a, b) => b.metadata.createdAt - a.metadata.createdAt)
+        .filter((p) => p.metadata.type === 'project');
 
       // // Sort by donations desc
       // const result = data.projects!.sort((a, b) => {
