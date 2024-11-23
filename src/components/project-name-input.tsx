@@ -5,76 +5,65 @@ import { useEffect, useState, useTransition } from 'react';
 
 import { AutoComplete } from './autocomplete';
 
-import { WithValue } from '@/core/types';
-import { useProjectNames } from '@/hooks/use-project-names';
+import { Project, SearchProjectsResponse } from '@/core/types';
+import { useSearchProjects } from '@/hooks/use-search-projects';
 import { cn } from '@/utils/cn';
-import { normalizeString } from '@/utils/normalize-string';
 import { sendEvent } from '@/utils/send-event';
 
+const MIN_QUERY_LENGTH = 3;
+
 export const ProjectNameInput = () => {
-  const { data } = useProjectNames();
+  const [query, setQuery] = useState('');
+  const { data, isFetching } = useSearchProjects(query.length > MIN_QUERY_LENGTH ? query : undefined) as SearchProjectsResponse;
+  const [results, updateResults] = useState<Project[]>([]);
+  const [currentItem, setCurrentItem] = useState<Project | null>(null);
 
-  const [search, setSearch] = useState('');
-  const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setSearch(e.target.value);
-
-  type Item = NonNullable<typeof data>[number] & WithValue;
-
-  const [currentItem, setCurrentItem] = useState<Item | null>(null);
-  const [items, setItems] = useState<Item[]>([]);
-
-  const renderItem = (index: number) => <p>{items[index].value}</p>;
-
-  const onSelect = (value: string) => {
-    setSearch(value);
-    const matchKey = normalizeString(value);
-    const selected = (items ?? []).find((project) => project.key === matchKey);
-    const name = selected?.projects.filter((p) => !!p?.name)[0]?.name;
-    if (selected && name) setCurrentItem({ ...selected, value: name });
+  const onSelect = (projectId: string) => {
+    setCurrentItem(results.find((project) => project.id === projectId) ?? null);
   };
 
   const { push } = useRouter();
   const [isPendingPush, startPushTransition] = useTransition();
+
+  /**
+   * Navigate to project page on select
+   */
   const onClickFetch = () => {
+    console.log('clicked fetch...');
     if (currentItem) {
-      sendEvent('buttonClicked', `Fetch Data: "${currentItem.value}"`);
-      startPushTransition(() => push(`/projects/${currentItem.key}`));
+      sendEvent('buttonClicked', `Fetch Data: "${currentItem.id}"`);
+      startPushTransition(() => push(`/projects/${currentItem.chainId}/${currentItem.id}`));
     }
   };
 
   useEffect(() => {
-    if (search.length > 1) {
-      const newItems = (data ?? [])
-        .filter((project) => {
-          const inputMatch = search.toLowerCase().replaceAll('-', ' ');
-          const isMatchKey = project.key.includes(inputMatch);
-          const isMatchTitle = project.projects.some((p) =>
-            p && p.name ? p.name.toLowerCase().includes(inputMatch) : false,
-          );
-          return isMatchKey || isMatchTitle;
-        })
-        .map((project) => ({
-          ...project,
-          value: project.projects.filter((p) => !!p?.name)[0]?.name as string,
-        }));
-
-      setItems(newItems);
+    if (data?.searchProjects && data?.searchProjects.length > 0) {
+      updateResults(data.searchProjects.map((project: Project) => ({
+        ...project,
+        value: project.id,
+      }))
+      );
     }
-  }, [data, search]);
+  }, [data]);
 
-  const isLoading = !data || isPendingPush;
-  const isLoadingBtn = isLoading || !currentItem || !search;
+  const isLoadingBtn = isFetching || isPendingPush;
+
+  const renderAutocompleteSuggestion = (index: number) => {
+    const title = `${results[index].name} (${results[index].chainId})`;
+    return <p>{title}</p>;
+  };
 
   return (
     <>
       <AutoComplete
-        items={items}
-        total={data?.length ?? 0}
-        inputValue={search}
-        onChangeInput={onChangeInput}
+        // @ts-expect-error TODO: fix this
+        items={results}
+        total={results.length}
+        inputValue={currentItem?.name ?? query}
+        onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         onSelect={onSelect}
-        renderItem={renderItem}
-        isLoading={isLoading}
+        renderItem={renderAutocompleteSuggestion}
+        isLoading={isFetching}
       />
       <div className="absolute bottom-0 left-0 z-20 w-full">
         <button

@@ -4,53 +4,47 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 
+import { useProjectContext } from '@/app/projects/[chainId]/[projectId]/context';
 import { CHAINS } from '@/core/constants';
-import { useProject } from '@/hooks/use-project';
 import { cn } from '@/utils/cn';
 import { formatDate } from '@/utils/format-date';
 import { normalizeString } from '@/utils/normalize-string';
 import { sendEvent } from '@/utils/send-event';
 
-interface Props {
-  title: string;
-}
-
-export const ProjectRoundStats = ({ title }: Props) => {
+export const ProjectRoundStats = () => {
   const { push } = useRouter();
-  const { data } = useProject(title);
+  const { project } = useProjectContext();
 
   const roundInfos = useMemo(() => {
-    if (!data) return [];
+    if (!project) return [];
 
-    const result = data.flatMap((d) =>
-      d
-        .applications!.filter((application) => !!application.round?.roundMetadata.name)
-        .map((application) => {
-          const { totalAmountDonatedInUsd, totalDonationsCount, chainId, round } = application;
-          const {
-            id,
-            roundMetadata: { name },
-            donationsStartTime,
-            donationsEndTime,
-          } = round!;
+    const result = project.applications!
+      .filter((application) => !!application.round?.roundMetadata.name)
+      .map((application) => {
+        const { totalAmountDonatedInUsd, totalDonationsCount, chainId, round } = application;
+        const {
+          id,
+          roundMetadata: { name },
+          donationsStartTime,
+          donationsEndTime,
+        } = round!;
 
-          const chain = CHAINS.find((chain) => chain.id === `${chainId}`)!;
+        const chain = CHAINS.find((chain) => chain.id === `${chainId}`)!;
 
-          return {
-            id,
-            name,
-            chain,
-            totalAmount: totalAmountDonatedInUsd ?? 0,
-            contributors: totalDonationsCount ?? 0,
-            startTime: formatDate(donationsStartTime),
-            endTime: formatDate(donationsEndTime),
-            ts: new Date(donationsStartTime).getTime(),
-          };
-        }),
-    );
+        return {
+          id,
+          name,
+          chain,
+          totalAmount: totalAmountDonatedInUsd ?? 0,
+          contributors: totalDonationsCount ?? 0,
+          startTime: formatDate(donationsStartTime),
+          endTime: formatDate(donationsEndTime),
+          ts: new Date(donationsStartTime).getTime(),
+        };
+      });
 
     return result.sort((a, b) => b.ts - a.ts);
-  }, [data]);
+  }, [project]);
 
   const [viewedRoundId, setViewedRoundId] = useState('');
   const [isPendingPush, startPushTransition] = useTransition();
@@ -63,9 +57,9 @@ export const ProjectRoundStats = ({ title }: Props) => {
     });
   };
 
-  if (!data) return <p>Loading Round Stats ...</p>;
+  if (!project) return <p>Loading Round Stats ...</p>;
 
-  const projectName = data.map((d) => d.name)[0]!;
+  const projectName = project.name!;
 
   return (
     <div className="flex flex-col gap-6 pt-6">

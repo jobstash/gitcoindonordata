@@ -1,4 +1,6 @@
+import { Project } from "@/gql/graphql";
 export type WithValue<T = string> = { value: T };
+
 export interface DonationRow {
   id: string;
   timestamp: string;
@@ -14,3 +16,9 @@ export interface DonationRow {
   chainId: number;
   amountInUsd: number;
 }
+
+
+  
+export type SearchProjectsResponse = { data: { searchProjects: Project[] }, isFetching: boolean };
+
+export type { Project };

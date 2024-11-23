@@ -8,9 +8,11 @@ import { GQL_ENDPOINT, STALETIME } from '@/core/constants';
 import { queryKeys } from '@/core/query-keys';
 import { getProjectNames } from '@/data/get-project-names';
 
+/**
+ * @deprecated
+ */
 export const getProjectNameFromTitle = async (title: string) => {
   const queryClient = getQueryClient();
-
   const normalizedName = normalizeString(title);
 
   const projectNamesData = await queryClient.fetchQuery({

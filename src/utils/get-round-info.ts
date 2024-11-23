@@ -1,10 +1,10 @@
 import { formatDate } from './format-date';
 
 import { CHAINS } from '@/core/constants';
-import { GetProjectQuery } from '@/gql/graphql';
+import { Project } from '@/core/types';
 
-export const getRoundInfo = (data?: GetProjectQuery['projects'], roundId?: string) => {
-  if (!data)
+export const getRoundInfo = (project: Project, roundId?: string) => {
+  if (!project)
     return {
       name: DEFAULT_TEXT,
       chain: null,
@@ -27,9 +27,8 @@ export const getRoundInfo = (data?: GetProjectQuery['projects'], roundId?: strin
   let donationsEndTime: string | undefined;
   const donorsSet = new Set();
 
-  const projectName = data.map((d) => d.name)[0]!;
-
-  const applicationList = data.map((d) => d.applications).flat() ?? [];
+  const projectName = project.name!;
+  const applicationList = project.applications ?? [];
   const applications = roundId
     ? applicationList.filter((a) => a!.round?.id === roundId)
     : applicationList;
@@ -38,6 +37,8 @@ export const getRoundInfo = (data?: GetProjectQuery['projects'], roundId?: strin
     estimatedFunds += application!.totalAmountDonatedInUsd ?? 0;
     contributors += application!.totalDonationsCount ?? 0;
 
+    // TODO: This is a temporary solution to get the donors. We need to use the API to get the donors.
+    // we should have a helper function to get the donors from the API so its more performant.
     const donors = application!.donations.map((d) => d.donorAddress);
     for (const donor of donors) {
       if (donor) donorsSet.add(donor);
@@ -60,7 +61,7 @@ export const getRoundInfo = (data?: GetProjectQuery['projects'], roundId?: strin
     estimatedFunds: `$${estimatedFunds.toFixed(2)}`,
     contributors,
     uniqueContributors: donorsSet.size,
-    roundsParticipated: data.map((d) => d.applications).flat().length,
+    roundsParticipated: applicationList.length,
     avgContribution: !contributors ? '$0' : `$${(estimatedFunds / contributors).toFixed(2)}`,
   };
 };

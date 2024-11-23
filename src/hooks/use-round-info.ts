@@ -6,6 +6,9 @@ import { STALETIME } from '@/core/constants';
 import { queryKeys } from '@/core/query-keys';
 import { getRoundInfo } from '@/utils/get-round-info';
 
+/**
+ * @deprecated use useRoundInfoV2 instead
+ */
 export const useRoundInfo = (title: string, roundId?: string) => {
   const { data } = useProject(title);
 
@@ -13,7 +16,8 @@ export const useRoundInfo = (title: string, roundId?: string) => {
 
   return useQuery({
     queryKey: queryKeys.getRoundInfo(title, applicationIds, roundId),
-    queryFn: () => getRoundInfo(data!, roundId),
+    // @ts-expect-error TODO: fix this
+    queryFn: () => getRoundInfo(data, roundId),
     enabled: !!data,
     staleTime: STALETIME.DEFAULT,
   });
