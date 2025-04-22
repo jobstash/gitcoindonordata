@@ -1,25 +1,33 @@
 import request from 'graphql-request';
 
-import { getQueryClient } from './get-query-client';
 import { normalizeString } from './normalize-string';
 import { selectFromProjectNamesQuery } from './select-from-project-names-query';
 
-import { GQL_ENDPOINT, STALETIME } from '@/core/constants';
-import { queryKeys } from '@/core/query-keys';
+import { GQL_ENDPOINT } from '@/core/constants';
 import { getProjectNames } from '@/data/get-project-names';
+import { GetProjectNamesQuery } from '@/gql/graphql';
 
 export const getProjectNameFromTitle = async (title: string) => {
-  const queryClient = getQueryClient();
-
   const normalizedName = normalizeString(title);
 
-  const projectNamesData = await queryClient.fetchQuery({
-    queryKey: queryKeys.getProjectNames(),
-    queryFn: () => request(GQL_ENDPOINT, getProjectNames),
-    staleTime: STALETIME.DEFAULT,
-  });
+  let allProjectNamesData: GetProjectNamesQuery[] = [];
+  let offset = 0;
+  const limit = 200;
 
-  return selectFromProjectNamesQuery(projectNamesData, normalizedName)
+  while (true) {
+    const projectNamesData = await request(GQL_ENDPOINT, getProjectNames, { offset });
+
+    if (!projectNamesData || projectNamesData.applications.length === 0) {
+      break;
+    }
+
+    allProjectNamesData = allProjectNamesData.concat(projectNamesData);
+    offset += limit;
+  }
+
+  return selectFromProjectNamesQuery(
+    { applications: allProjectNamesData.flatMap((query) => query.applications) },
+    normalizedName)
     .flatMap((p) => p.projects)
     .find((p) => normalizeString(p?.name ?? '') === title)?.name;
 };
