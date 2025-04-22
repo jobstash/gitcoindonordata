@@ -1,8 +1,8 @@
 import { graphql } from '@/gql';
 
 export const getProjectNames = graphql(`
-  query GetProjectNames {
-    applications(condition: { status: APPROVED }, filter: { projectId: { isNull: false } }) {
+  query GetProjectNames($offset: Int!) {
+    applications(where: {status: {_eq: "APPROVED"}, projectId: {_isNull: false}}, limit: 200, orderBy: {project: {name: DESC}}, offset: $offset) {
       project {
         chainId
         name

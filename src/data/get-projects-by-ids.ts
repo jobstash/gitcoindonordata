@@ -2,9 +2,9 @@ import { graphql } from '@/gql';
 
 export const getProjectsByIds = graphql(`
   query GetProject($projectIds: [String!]) {
-    projects(filter: { id: { in: $projectIds } }) {
+    projects(where: {id: {_in: $projectIds}}) {
       name
-      applications(filter: { status: { equalTo: APPROVED } }) {
+      applications(where: {status: {_eq: APPROVED}}) {
         id
         totalAmountDonatedInUsd
         totalDonationsCount
