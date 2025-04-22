@@ -1,4 +1,4 @@
-export const GQL_ENDPOINT = 'https://grants-stack-indexer-v2.gitcoin.co/graphql';
+export const GQL_ENDPOINT = 'https://beta.indexer.gitcoin.co/v1/graphql';
 
 export const STALETIME = {
   DEFAULT: 1000 * 60 * 60, // 1 hr
